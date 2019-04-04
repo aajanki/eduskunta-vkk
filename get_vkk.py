@@ -5,6 +5,7 @@ import json
 import os
 import os.path
 import requests
+import requests.exceptions
 import shutil
 import time
 import xml.etree.ElementTree as ET
@@ -26,18 +27,21 @@ def main():
 
 
 def download_documents(metadata, docdir):
-    for x in metadata:
+    for i, x in enumerate(metadata):
         time.sleep(0.2)
 
         doc_id = x['id']
         destfile = os.path.join(docdir, doc_id + '.pdf')
 
-        print(f'Downloading document {destfile}')
-        save_as_file(x['url'], destfile)
+        print(f'Downloading document {i+1}/{len(metadata)} {destfile}')
+        try:
+            save_as_file(x['url'], destfile)
+        except requests.exceptions.ConnectionError as ex:
+            print(ex)
 
 
 def save_as_file(url, filename):
-    with open(filename, 'wb') as f, requests.get(url, stream=True) as r:
+    with open(filename, 'wb') as f, requests.get(url, stream=True, timeout=60) as r:
         r.raise_for_status()
         shutil.copyfileobj(r.raw, f)
 
