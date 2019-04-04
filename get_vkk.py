@@ -2,14 +2,47 @@
 # avoindata.eduskunta.fi
 
 import json
+import os
+import os.path
 import requests
+import shutil
+import time
 import xml.etree.ElementTree as ET
-
 
 avoin_data_host = 'http://avoindata.eduskunta.fi'
 
 
-def get_documents():
+def main():
+    datadir = 'data'
+    docdir = os.path.join(datadir, 'orig')
+    metadata_filename = os.path.join(datadir, 'metadata.json')
+
+    os.makedirs(docdir, exist_ok=True)
+
+    metadata = get_metadata()
+    json.dump(metadata, open(metadata_filename, 'w'))
+
+    download_documents(metadata, docdir)
+
+
+def download_documents(metadata, docdir):
+    for x in metadata:
+        time.sleep(0.2)
+
+        doc_id = x['id']
+        destfile = os.path.join(docdir, doc_id + '.pdf')
+
+        print(f'Downloading document {destfile}')
+        save_as_file(x['url'], destfile)
+
+
+def save_as_file(url, filename):
+    with open(filename, 'wb') as f, requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        shutil.copyfileobj(r.raw, f)
+
+
+def get_metadata():
     doc_type = 'Vastaus%20kirjalliseen%20kysymykseen'
     expected_columns = [
         'Id',
@@ -25,6 +58,8 @@ def get_documents():
     has_more = True
     docs = []
     while has_more:
+        print(f'Downloading metadata page {page_num + 1}')
+
         res = get_page(doc_type, page_num)
         page_num += 1 
         has_more = res.get('hasMore', False) == True
@@ -52,11 +87,11 @@ def parse_row(data):
 
 
 def expand_metadata(data):
-    metadata = get_metadata(data.get('metadata_url'))
+    metadata = get_document_metadata(data.get('metadata_url'))
     return {**data, **metadata}
 
 
-def get_metadata(url):
+def get_document_metadata(url):
     expected_columns = [
         'Id',
 	'XmlData',
@@ -72,10 +107,12 @@ def get_metadata(url):
     metadata = r.json()
     assert metadata.get('columnNames', []) == expected_columns
 
-    xml_data = metadata.get('rowData', [])[0][1]
-    return parse_xml_data(xml_data)
+    row_data = metadata.get('rowData')[0]
+    data = parse_xml_data(row_data[1])
+    data.update({'timestamp': row_data[3]})
+    return data
 
-    
+
 def parse_xml_data(data):
     tag_path = (
         './/{http://www.vn.fi/skeemat/metatietoelementit/2010/04/27}'
@@ -101,4 +138,4 @@ def get_href(atag):
 
 
 if __name__ == '__main__':
-    print(json.dumps(get_documents()))
+    main()
