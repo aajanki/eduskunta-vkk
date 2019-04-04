@@ -9,6 +9,9 @@ import requests.exceptions
 import shutil
 import time
 import xml.etree.ElementTree as ET
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 
 avoin_data_host = 'http://avoindata.eduskunta.fi'
 
@@ -27,6 +30,13 @@ def main():
 
 
 def download_documents(metadata, docdir):
+    retry = Retry(total=3,
+                  backoff_factor=0.5,
+                  status_forcelist=[500, 502, 503, 504])
+    session = requests.Session()
+    session.mount('http://', HTTPAdapter(max_retries=retry))
+    session.mount('https://', HTTPAdapter(max_retries=retry))
+
     for i, x in enumerate(metadata):
         time.sleep(0.2)
 
@@ -35,13 +45,14 @@ def download_documents(metadata, docdir):
 
         print(f'Downloading document {i+1}/{len(metadata)} {destfile}')
         try:
-            save_as_file(x['url'], destfile)
-        except requests.exceptions.ConnectionError as ex:
+            save_as_file(x['url'], destfile, session)
+        except requests.exceptions.RequestException as ex:
             print(ex)
 
 
-def save_as_file(url, filename):
-    with open(filename, 'wb') as f, requests.get(url, stream=True, timeout=60) as r:
+def save_as_file(url, filename, session):
+    with open(filename, 'wb') as f, \
+         session.get(url, stream=True, timeout=60) as r:
         r.raise_for_status()
         shutil.copyfileobj(r.raw, f)
 
