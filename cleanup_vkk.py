@@ -2,13 +2,16 @@ import codecs
 import os
 import os.path
 import re
+from nltk.tokenize import sent_tokenize
 
 
 def main():
     datadir = 'data'
     outputdir = 'data/answers'
+    sentencedir = 'data/sentences'
 
     os.makedirs(outputdir, exist_ok=True)
+    os.makedirs(sentencedir, exist_ok=True)
     
     textdir = os.path.join(datadir, 'text')
     for textfile in os.listdir(textdir):
@@ -17,8 +20,13 @@ def main():
         if os.path.getsize(full_path) > 100:
             lines = codecs.open(full_path, encoding='utf-8').readlines()
             if detect_language(lines) == 'fi':
+                text = cleanup_vkk(lines)
                 with open(os.path.join(outputdir, textfile), 'w') as f:
-                    f.write(cleanup_vkk(lines))
+                    f.write(text)
+
+                sentences = sent_tokenize(text.replace('\n', ' '), 'finnish')
+                with open(os.path.join(sentencedir, textfile), 'w') as f:
+                    f.write('\n'.join(sentences))
             else:
                 print(f'WARNING: Document {textfile} not in Finnish')
 
