@@ -30,8 +30,10 @@ def main():
         sentences.extend(doc_sentences)
         ys.extend([y]*len(doc_sentences))
 
-    X_temp, X_test, Y_temp, Y_test = train_test_split(sentences, ys, test_size=500)
-    X_train, X_dev, Y_train, Y_dev = train_test_split(X_temp, Y_temp, test_size=500)
+    X_temp, X_test, Y_temp, Y_test = train_test_split(
+        sentences, ys, test_size=500, random_state=42)
+    X_train, X_dev, Y_train, Y_dev = train_test_split(
+        X_temp, Y_temp, test_size=500, random_state=42)
 
     df_train = pd.DataFrame({'sentence': X_train, 'ministry': Y_train})
     df_dev = pd.DataFrame({'sentence': X_dev, 'ministry': Y_dev})
@@ -65,12 +67,17 @@ def load_metadata(filename):
 
 def get_ministry(metadata):
     merged = {
+        # Merge the divided ministries
         'oikeusministeri': 'oikeus- ja työministeri',
         'työministeri': 'oikeus- ja työministeri',
         'asunto-, energia- ja ympäristöministeri': 'maatalous- ja ympäristöministeri',
         'maa- ja metsätalousministeri': 'maatalous- ja ympäristöministeri',
         'ulkoasiainministeri': 'ulkoministeri',
         'opetusministeri': 'opetus- ja kulttuuriministeri',
+
+        # Merge smallest classes to nearest sensible class
+        'puolustusministeri': 'sisäministeri',
+        'kunta- ja uudistusministeri': 'valtiovarainministeri',
     }
     return {k: merged.get(v['position'], v['position'])
             for (k, v) in metadata.items()}
