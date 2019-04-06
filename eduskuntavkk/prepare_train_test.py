@@ -1,3 +1,6 @@
+# Split the documents into sentences and divide the sentences into
+# train, dev and test datasets
+
 import codecs
 import json
 import os
@@ -31,14 +34,16 @@ def main():
         sentences.extend(doc_sentences)
         ys.extend([y]*len(doc_sentences))
 
-    X_temp, X_test, Y_temp, Y_test = train_test_split(
-        sentences, ys, test_size=500, random_state=42)
-    X_train, X_dev, Y_train, Y_dev = train_test_split(
-        X_temp, Y_temp, test_size=500, random_state=42)
+    all_sentences = pd.DataFrame({'sentence': sentences, 'ministry': ys})
+    # drop a rare class
+    all_sentences = all_sentences[all_sentences['ministry'] !=
+                                  'Kulttuuri- ja asuntoministeri']
+    all_sentences = all_sentences.drop_duplicates()
 
-    df_train = pd.DataFrame({'sentence': X_train, 'ministry': Y_train})
-    df_dev = pd.DataFrame({'sentence': X_dev, 'ministry': Y_dev})
-    df_test = pd.DataFrame({'sentence': X_test, 'ministry': Y_test})
+    temp, df_test = train_test_split(all_sentences, test_size=2000,
+                                     random_state=42)
+    df_train, df_dev = train_test_split(temp, test_size=2000,
+                                        random_state=43)
 
     print('Train data')
     print(summarize(df_train))
