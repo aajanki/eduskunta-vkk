@@ -55,6 +55,12 @@ def find_start_of_the_answer(lines):
             line == 'Vastauksena kysymykseen esitän seuraavaa'):
             return i
 
+    # Can't recognize the start of the answer. Try to find the start
+    # of the question instead.
+    for i, line in enumerate(lines[:10]):
+        if 'kirjallisen kysymyksen' in line:
+            return i
+
     raise ValueError('The start of answer not found')
 
 
