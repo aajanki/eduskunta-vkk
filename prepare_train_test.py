@@ -20,6 +20,7 @@ def main():
     for textfile in os.listdir(textdir):
         doc_id = textfile.split('.')[0]
         y = ministries[doc_id]
+        assert y, f'Ministry missing on document {doc_id}'
 
         full_path = os.path.join(textdir, textfile)
         lines = codecs.open(full_path, encoding='utf-8').readlines()
