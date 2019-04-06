@@ -9,6 +9,8 @@
 # Original documents and intermediate formats will be saved in the
 # subdirectory data.
 
+set -eu
+
 python3 eduskuntavkk/get_vkk.py
 python3 eduskuntavkk/extract_text.py
 python3 eduskuntavkk/cleanup_vkk.py
