@@ -2,6 +2,7 @@ import codecs
 import json
 import os
 import os.path
+import re
 import pandas as pd
 from nltk.tokenize import sent_tokenize
 from sklearn.model_selection import train_test_split
@@ -25,7 +26,7 @@ def main():
         full_path = os.path.join(textdir, textfile)
         lines = codecs.open(full_path, encoding='utf-8').readlines()
         text = ' '.join(x.strip() for x in lines)
-        doc_sentences = sent_tokenize(text, 'finnish')
+        doc_sentences = tokenize_sentences(text)
 
         sentences.extend(doc_sentences)
         ys.extend([y]*len(doc_sentences))
@@ -75,12 +76,19 @@ def get_ministry(metadata):
         'ulkoasiainministeri': 'ulkoministeri',
         'opetusministeri': 'opetus- ja kulttuuriministeri',
 
-        # Merge smallest classes to nearest sensible class
+        # Merge smallest classes to the nearest sensible class
         'puolustusministeri': 'sisäministeri',
         'kunta- ja uudistusministeri': 'valtiovarainministeri',
     }
     return {k: merged.get(v['position'], v['position'])
             for (k, v) in metadata.items()}
+
+
+def tokenize_sentences(text):
+    return [
+        ' '.join(x.strip() for x in re.split(r'\b', sent) if x.strip())
+        for sent in sent_tokenize(text, 'finnish')
+    ]
 
 
 if __name__ == '__main__':
