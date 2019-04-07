@@ -57,9 +57,9 @@ def main():
     print(summarize(df_test))
 
     os.makedirs(outputdir, exist_ok=True)
-    df_train.to_csv(os.path.join(outputdir, 'train.csv'), index=False)
-    df_dev.to_csv(os.path.join(outputdir, 'dev.csv'), index=False)
-    df_test.to_csv(os.path.join(outputdir, 'test.csv'), index=False)
+    df_train.to_csv(os.path.join(outputdir, 'train.csv.bz2'), index=False)
+    df_dev.to_csv(os.path.join(outputdir, 'dev.csv.bz2'), index=False)
+    df_test.to_csv(os.path.join(outputdir, 'test.csv.bz2'), index=False)
 
 
 def summarize(df):
