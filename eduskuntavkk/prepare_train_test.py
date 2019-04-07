@@ -75,17 +75,15 @@ def load_metadata(filename):
 
 def get_ministry(metadata):
     merged = {
-        # Merge the divided ministries
+        # Merge the ministries that were split during the Sipilä Cabinet
         'oikeusministeri': 'oikeus- ja työministeri',
         'työministeri': 'oikeus- ja työministeri',
         'asunto-, energia- ja ympäristöministeri': 'maatalous- ja ympäristöministeri',
         'maa- ja metsätalousministeri': 'maatalous- ja ympäristöministeri',
-        'ulkoasiainministeri': 'ulkoministeri',
         'opetusministeri': 'opetus- ja kulttuuriministeri',
 
-        # Merge smallest classes to the nearest sensible class
-        'puolustusministeri': 'sisäministeri',
-        'kunta- ja uudistusministeri': 'valtiovarainministeri',
+        # Aliases
+        'ulkoasiainministeri': 'ulkoministeri',
     }
     return {k: merged.get(v['position'], v['position'])
             for (k, v) in metadata.items()}
