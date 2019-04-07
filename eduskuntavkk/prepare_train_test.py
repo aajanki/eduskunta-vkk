@@ -7,7 +7,8 @@ import os
 import os.path
 import re
 import pandas as pd
-from nltk.tokenize import sent_tokenize
+import nltk.data
+from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
 
 
@@ -18,6 +19,7 @@ def main():
 
     metadata = load_metadata(os.path.join(datadir, 'metadata.json'))
     ministries = get_ministry(metadata)
+    tokenizer = load_sent_tokenizer()
 
     sentences = []
     ys = []
@@ -29,7 +31,7 @@ def main():
         full_path = os.path.join(textdir, textfile)
         lines = codecs.open(full_path, encoding='utf-8').readlines()
         text = ' '.join(x.strip() for x in lines)
-        doc_sentences = tokenize_sentences(text)
+        doc_sentences = tokenize_sentences(tokenizer, text)
 
         sentences.extend(doc_sentences)
         ys.extend([y]*len(doc_sentences))
@@ -89,11 +91,23 @@ def get_ministry(metadata):
             for (k, v) in metadata.items()}
 
 
-def tokenize_sentences(text):
+def tokenize_sentences(tokenizer, text):
     return [
-        ' '.join(x.strip() for x in re.split(r'\b', sent) if x.strip())
-        for sent in sent_tokenize(text, 'finnish')
+        ' '.join(word_tokenize(sent, 'finnish', True))
+        for sent in tokenizer.tokenize(text, 'finnish')
     ]
+
+
+def load_sent_tokenizer():
+    # Add some common abbreviations that are missing form the nltk
+    # Finnish PunctTokenizer (Apr 2019).
+    abbrev = [
+        'jälj', 'ko', 'ks', 'ml', 'mm', 'mrd', 'n', 'pl', 's', 'v', 'vs', 'ym'
+    ]
+
+    tokenizer = nltk.data.load('tokenizers/punkt/finnish.pickle')
+    tokenizer._params.abbrev_types.update(abbrev)
+    return tokenizer
 
 
 if __name__ == '__main__':
