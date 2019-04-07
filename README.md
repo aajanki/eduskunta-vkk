@@ -9,9 +9,10 @@ luonnollisen kielen käsittelymenetelmien opettamiseen tai
 testaamiseen.
 
 Ainesto perustuu eduskunnan avoimena datana julkaisemaan ministerien
-vastauksiin kansanedustajien kirjallisiin kysymyksiin. Vastaukset on
-jaettu lauseiksi ja ennustettavana kohdemuuttujana on se ministeriö,
-jonka vastauksesta lause on poimittu.
+vastauksiin kansanedustajien kirjallisiin kysymyksiin vuosilta
+2015-2019. Vastaukset on jaettu lauseiksi ja ennustettavana
+kohdemuuttujana on se ministeriö, jonka vastauksesta lause on
+poimittu.
 
 ## Lausetiedostot
 
@@ -27,20 +28,15 @@ Jako opetus-, kehitys- ja testijoukkoihin on tehty jakamalla lauseet satunnaises
 
 ## Aineiston muodostaminen
 
-Lauseainesto on esikäsitellyssä muodossa [vkk-alihakemistossa](vkk), eikä sen käyttämiseksi tarvitse tehdä mitään.
+Lauseainesto on valmiiksi käytettävässä muodossa [vkk-alihakemistossa](vkk).
 
-Jos kuitenkin haluat ladata tuoreen aineiston ja toistaa esikäsittelyn, suorita seuraava komento:
+Jos kuitenkin haluat ladata tuoreen aineiston eduskunnan palvelimelta ja toistaa esikäsittelyn, suorita seuraava komento:
 ```
 pipenv run scripts/prepare_dataset.sh
 ```
 
 ## Käyttöehdot
 
-Dokumentit on alunperin julkaistu [eduskunnan avoimen datan
-arkistossa](http://avoindata.eduskunta.fi/). Alkuperäiset dokumentit
-ja tässä julkaistu edelleenkäsitelty aineisto on julkaistu CC Nimeä
-4.0 –lisenssillä.
+Dokumentit on alunperin julkaistu [eduskunnan avoimen datan arkistossa](http://avoindata.eduskunta.fi/). Alkuperäiset dokumentit ja tässä julkaistu edelleenkäsitelty aineisto on julkaistu CC Nimeä 4.0 –lisenssillä. Katso [LICENSE.data-tiedosto](LICENSE.data).
 
-Datan esikäsittelyskriptit on julkaistu MIT-lisenssillä.
-
-Tarkemmat tiedot [LICENSE-tiedostossa](LICENSE).
+Datan esikäsittelyskriptit on julkaistu MIT-lisenssillä. Katso [LICENSE-tiedosto](LICENSE).
