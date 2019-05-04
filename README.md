@@ -28,6 +28,8 @@ Jako opetus-, kehitys- ja testiaineistoihin on tehty jakamalla lauseet satunnais
 
 ## Aineistoa kuvailevia tilastoja
 
+Luokkien lukumäärä: 15
+
 Lauseiden lukumäärät:
 
 * Opetusaineisto: 49693
