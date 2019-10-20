@@ -20,10 +20,12 @@ def main():
     datadir = 'data'
     docdir = os.path.join(datadir, 'orig')
     metadata_filename = os.path.join(datadir, 'metadata.json')
+    id_upper_limit = 124296 # This is the ID of the last Sipilä cabinet answer
 
     os.makedirs(docdir, exist_ok=True)
 
     metadata = get_metadata()
+    metadata = [x for x in metadata if int(x['id']) <= id_upper_limit]
     json.dump(metadata, open(metadata_filename, 'w'))
 
     download_documents(metadata, docdir)
