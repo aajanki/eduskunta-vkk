@@ -4,6 +4,7 @@
 import json
 import os
 import os.path
+import re
 import requests
 import requests.exceptions
 import shutil
@@ -96,9 +97,11 @@ def get_page(doc_type, page_num):
 
 
 def parse_row(data):
+    eduskuntatunnus = data[1]
+
     return {
         'id': data[0],
-        'url': get_href(data[5]),
+        'url': get_href(data[5]) or doc_url_by_ektunnus(eduskuntatunnus),
         'metadata_url': avoin_data_host + '/' + get_href(data[6]),
     }
 
@@ -152,6 +155,14 @@ def get_href(atag):
     assert atag.startswith('<a href=')
 
     return atag[len('<a href='):].split('>', 1)[0].strip('"')
+
+
+def doc_url_by_ektunnus(ektunnus):
+    m = re.match(r'KKV? (\d+)/(\d{4})', ektunnus)
+    if not m:
+        return None
+
+    return f'https://www.eduskunta.fi/FI/vaski/Kysymys/Documents/KKV_{m.group(1)}+{m.group(2)}.pdf'
 
 
 if __name__ == '__main__':
