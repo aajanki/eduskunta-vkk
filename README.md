@@ -75,7 +75,7 @@ Testi- ja kehitysaineistojen luokkajakaumat vastaavat opetusaineiston jakaumaa.
 
 Ainesto on valmiiksi käytettävässä muodossa [vkk-alihakemistossa](vkk).
 
-Jos kuitenkin haluat ladata tuoreen aineiston eduskunnan palvelimelta ja toistaa esikäsittelyn, suorita seuraava komento:
+Jos kuitenkin haluat ladata tuoreen aineiston eduskunnan palvelimelta ja toistaa esikäsittelyn, asenna tesseract ja imagemagick ja suorita seuraava komento:
 ```
 pipenv run scripts/prepare_dataset.sh
 ```

@@ -11,7 +11,7 @@ def main():
     outputdir = 'data/answers'
 
     os.makedirs(outputdir, exist_ok=True)
-    
+
     textdir = os.path.join(datadir, 'text')
     for textfile in os.listdir(textdir):
         full_path = os.path.join(textdir, textfile)
@@ -19,7 +19,10 @@ def main():
         if os.path.getsize(full_path) > 100:
             lines = codecs.open(full_path, encoding='utf-8').readlines()
             if detect_language(lines) == 'fi':
-                text = cleanup_vkk(lines)
+                try:
+                    text = cleanup_vkk(lines)
+                except Exception as ex:
+                    print(f'Failed to cleanup {full_path}: {str(ex)}')
                 with open(os.path.join(outputdir, textfile), 'w') as f:
                     f.write(text)
             else:

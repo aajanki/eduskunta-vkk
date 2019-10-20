@@ -2,6 +2,7 @@ import glob
 import os
 import os.path
 import subprocess
+import tempfile
 
 
 def main():
@@ -10,27 +11,43 @@ def main():
 
     os.makedirs(outdir, exist_ok=True)
 
-    for f in glob.glob(docdir + '*.pdf'):
-        doc_id = os.path.splitext(os.path.basename(f))[0]
+    for input_name in glob.glob(docdir + '*.pdf'):
+        doc_id = os.path.splitext(os.path.basename(input_name))[0]
         output_name = os.path.join(outdir, doc_id + '.txt')
 
-        statinfo = os.stat(f)
-        if statinfo.st_size == 0:
-            print(f'Skipping the empty file {f}')
+        if os.path.getsize(input_name) == 0:
+            print(f'Skipping the empty file {input_name}')
             continue
 
         try:
-            text = extract_text(f)
-            with open(output_name, 'w') as f:
-                f.write(text)
+            extract_text(input_name, output_name)
+
+            if os.path.getsize(output_name) < 100:
+                ocr_pdf(input_name, output_name)
         except subprocess.CalledProcessError as ex:
             print(ex)
 
 
-def extract_text(pdffile):
-    p = subprocess.run(['pdftotext', pdffile, '-'], capture_output=True,
-                       encoding='utf-8', check=True)
-    return p.stdout
+def extract_text(pdffile, outputfile):
+    subprocess.run(['pdftotext', pdffile, outputfile], check=True)
+
+
+def ocr_pdf(pdffile, outputfile):
+    f = tempfile.NamedTemporaryFile(suffix='.tiff', delete=False)
+    try:
+        f.close()
+
+        subprocess.run(
+            ['montage', '-density', '300', pdffile, '-mode', 'Concatenate',
+             '-tile', '1x', '-depth', '8', f.name],
+            check=True)
+
+        assert outputfile.endswith('.txt')
+        subprocess.run(
+            ['tesseract', f.name, outputfile[:-len('.txt')], '-l', 'fin'],
+            check=True)
+    finally:
+        os.remove(f.name)
 
 
 if __name__ == '__main__':
