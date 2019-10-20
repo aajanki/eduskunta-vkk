@@ -3,6 +3,8 @@ import os
 import os.path
 import re
 
+number_word_re = re.compile(r'(\b\d{2,})([^\d\s:/-]{3,})\b')
+
 
 def main():
     datadir = 'data'
@@ -45,6 +47,7 @@ def cleanup_vkk(lines):
     lines = lines[(find_start_of_the_answer(lines) + 1):]
     lines = remove_signature(lines)
     lines = dehyphenate(lines)
+    lines = [fix_number_word_separators(x) for x in lines]
 
     return '\n'.join(lines)
 
@@ -133,9 +136,19 @@ def dehyphenate(lines):
         else:
             res.append(line2)
 
-        hyphen = line.endswith('-') and next_line
+        hyphen = (line.endswith('-') and
+                  len(line) >= 2 and
+                  not line[-2].isdigit() and
+                  next_line)
 
     return res
+
+
+def fix_number_word_separators(line):
+    """Add space between numbers and string
+    For example: 2020luvulle -> 2020 luvulle
+    """
+    return number_word_re.sub(r'\1 \2', line)
 
 
 if __name__ == '__main__':
