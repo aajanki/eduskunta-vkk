@@ -1,5 +1,5 @@
-# Download "Vastaus kirjalliseen kysymykseen" metadata from
-# avoindata.eduskunta.fi
+# Download "Vastaus kirjalliseen kysymykseen" metadata and documents
+# from avoindata.eduskunta.fi
 
 import json
 import os
@@ -13,7 +13,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 
-avoin_data_host = 'http://avoindata.eduskunta.fi'
+avoin_data_host = 'https://avoindata.eduskunta.fi'
 
 
 def main():
