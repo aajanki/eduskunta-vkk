@@ -40,7 +40,7 @@ def main():
     # drop a rare class
     all_sentences = all_sentences[all_sentences['ministry'] !=
                                   'Kulttuuri- ja asuntoministeri']
-    all_sentences = all_sentences.drop_duplicates()
+    all_sentences = all_sentences.drop_duplicates('sentence')
 
     temp, df_test = train_test_split(all_sentences, test_size=2000,
                                      random_state=42)
