@@ -1,4 +1,5 @@
 import glob
+import os
 import os.path
 import subprocess
 
@@ -12,6 +13,11 @@ def main():
     for f in glob.glob(docdir + '*.pdf'):
         doc_id = os.path.splitext(os.path.basename(f))[0]
         output_name = os.path.join(outdir, doc_id + '.txt')
+
+        statinfo = os.stat(f)
+        if statinfo.st_size == 0:
+            print(f'Skipping the empty file {f}')
+            continue
 
         try:
             text = extract_text(f)
