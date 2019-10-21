@@ -14,6 +14,8 @@ vastauksiin kansanedustajien kirjallisiin kysymyksiin vuosilta
 kohdemuuttujana on se ministeriö, jonka vastauksesta lause on
 poimittu.
 
+[Muutoshistoria](changelog.md)
+
 ## Lausetiedostot
 
 Aineisto on saatavilla bzip2-pakattuina CSV-tiedostoina:
@@ -32,31 +34,32 @@ Luokkien lukumäärä: 15
 
 Lauseiden lukumäärät:
 
-* Opetusaineisto: 49693
-* Kehitysaineisto: 2000
-* Testiaineisto: 2000
+* Opetusaineisto: 49106
+* Kehitysaineisto: 3000
+* Testiaineisto: 3000
 
 Lauseiden mediaanipituus on 16 tokenia ja maksimipituus 176 tokenia.
 
 Luokat ja lauseiden lukumäärät luokittain opetusaineistossa:
 
 | Luokka                                    | Lauseiden lukumäärä |
-| ------                                    | ---- |
-| perhe- ja peruspalveluministeri           | 8038 |
-| maatalous- ja ympäristöministeri          | 7377 |
-| oikeus- ja työministeri                   | 6222 |
-| opetus- ja kulttuuriministeri             | 5652 |
-| sisäministeri                             | 5646 |
-| liikenne- ja viestintäministeri           | 3695 |
-| sosiaali- ja terveysministeri             | 3646 |
-| valtiovarainministeri                     | 2765 |
-| elinkeinoministeri                        | 1940 |
-| ulkoministeri                             |  977 |
-| kunta- ja uudistusministeri               |  954 |
-| eurooppa-, kulttuuri- ja urheiluministeri |  758 |
-| pääministeri                              |  705 |
-| puolustusministeri                        |  667 |
-| ulkomaankauppa- ja kehitysministeri       |  651 |
+| ------                                    |  ---- |
+| perhe- ja peruspalveluministeri           |  7923 |
+| maatalous- ja ympäristöministeri          |  7365 |
+| oikeus- ja työministeri                   |  6057 |
+| sisäministeri                             |  5581 |
+| opetus- ja kulttuuriministeri             |  5417 |
+| liikenne- ja viestintäministeri           |  3691 |
+| sosiaali- ja terveysministeri             |  3581 |
+| valtiovarainministeri                     |  2718 |
+| elinkeinoministeri                        |  1931 |
+| ulkoministeri                             |   946 |
+| kunta- ja uudistusministeri               |   920 |
+| pääministeri                              |   798 |
+| eurooppa-, kulttuuri- ja urheiluministeri |   795 |
+| puolustusministeri                        |   756 |
+| ulkomaankauppa- ja kehitysministeri       |   627 |
+
 
 Testi- ja kehitysaineistojen luokkajakaumat vastaavat opetusaineiston jakaumaa.
 

@@ -7,12 +7,15 @@ import os
 import os.path
 import re
 import pandas as pd
+import numpy as np
 import nltk.data
 from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
 
 
 def main():
+    num_sentences_dev = 3000
+    num_sentences_test = 3000
     datadir = 'data'
     textdir = 'data/answers'
     outputdir = 'vkk'
@@ -42,19 +45,32 @@ def main():
                                   'Kulttuuri- ja asuntoministeri']
     all_sentences = all_sentences.drop_duplicates('sentence')
 
-    temp, df_test = train_test_split(all_sentences, test_size=2000,
+    temp, df_test = train_test_split(all_sentences, test_size=num_sentences_test,
                                      random_state=42)
-    df_train, df_dev = train_test_split(temp, test_size=2000,
+    df_train, df_dev = train_test_split(temp, test_size=num_sentences_dev,
                                         random_state=43)
+
+    token_counts = [len(word_tokenize(x)) for x in all_sentences['sentence']]
+    median_num_tokens = np.median(token_counts)
+    max_num_tokens = np.max(token_counts)
 
     print('Train data')
     print(summarize(df_train))
     print()
+    print(f'Number of train sentences: {len(df_train)}')
+    print()
     print('Dev data')
     print(summarize(df_dev))
     print()
+    print(f'Number of dev sentences: {len(df_dev)}')
+    print()
     print('Test data')
     print(summarize(df_test))
+    print()
+    print(f'Number of test sentences: {len(df_test)}')
+    print()
+    print(f'Median tokens per sentence: {median_num_tokens}')
+    print(f'Max tokens per sentence: {max_num_tokens}')
 
     os.makedirs(outputdir, exist_ok=True)
     df_train.to_csv(os.path.join(outputdir, 'train.csv.bz2'), index=False)
