@@ -20,9 +20,9 @@ poimittu.
 
 Aineisto on saatavilla bzip2-pakattuina CSV-tiedostoina:
 
-* [vkk/train.csv.bz2](vkk/train.csv.bz2): Opetusjoukko
-* [vkk/dev.csv.bz2](vkk/dev.csv): Kehitysjoukko
-* [vkk/test.csv.bz2](vkk/test.csv.bz2): Testijoukko
+* [Opetusaineisto](tree/v2/vkk/train.csv.bz2)
+* [Kehitysaineisto](tree/v2/vkk/dev.csv.bz2)
+* [Testiaineisto](tree/v2/vkk/test.csv.bz2)
 
 Jokainen tiedosto on CSV-muotoinen (sarake-erottimena pilkku) ja sisältää kaksi saraketta: sentence ja ministry. Tiedoston ensimmäisellä rivillä on sarakeotsikot. Jokainen sentence-sarakeen rivi on yksi lause satunnaisesta vastauksesta ja vastaava ministry-sarakeeen rivi kertoo minkä ministeriön vastauksesta lause on poimittu. Välimerkit on eroteltu niitä edeltävistä ja seuraavista sanoista lisäämällä tarvittaessa välilyöntejä.
 
