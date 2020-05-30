@@ -74,6 +74,10 @@ Testi- ja kehitysaineistojen luokkajakaumat vastaavat opetusaineiston jakaumaa.
 | Vihapuhetyöryhmä antaa suosituksensa huhtikuun 2019 lopussa . | oikeus- ja työministeri |
 | Toissijaisuuden arviointi jää viime kädessä tuomioistuinten ratkaistavaksi . | liikenne- ja viestintäministeri |
 
+## Yksinkertainen luokitin
+
+Olen opettanut [yksinkertaisen luokittimen](baseline_classifier/baseline.ipynb), jota voi käyttää vertailukohtana edistyneempiä luokittimia opetettaessa.
+
 ## Aineiston muodostaminen
 
 Ainesto on valmiiksi käytettävässä muodossa [vkk-alihakemistossa](vkk).
