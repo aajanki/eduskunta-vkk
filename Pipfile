@@ -7,8 +7,10 @@ name = "pypi"
 requests = "*"
 pandas = "*"
 nltk = "*"
-scikit-learn = "==0.20.*"
+scikit-learn = "==0.23.*"
 voikko = "*"
+jupyter = "*"
+matplotlib = "*"
 
 [dev-packages]
 
