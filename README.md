@@ -82,7 +82,12 @@ Olen opettanut [yksinkertaisen luokittimen](baseline_classifier/baseline.ipynb),
 
 Ainesto on valmiiksi käytettävässä muodossa [vkk-alihakemistossa](vkk).
 
-Jos kuitenkin haluat ladata tuoreen aineiston eduskunnan palvelimelta ja toistaa esikäsittelyn, asenna tesseract ja imagemagick ja suorita seuraava komento:
+Jos kuitenkin haluat ladata tuoreen aineiston eduskunnan palvelimelta ja toistaa esikäsittelyn, asenna aluksi tarvittavat ohjelmat Tesseract suomen kielen tuella, pdftotext (Poppler) ja ImageMagick. Ubuntussa:
+```
+sudo apt install tesseract-ocr-fin imagemagick poppler-utils
+```
+
+Suorita sitten seuraava komento:
 ```
 pipenv run scripts/prepare_dataset.sh
 ```

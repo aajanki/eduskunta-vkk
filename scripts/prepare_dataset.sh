@@ -11,6 +11,8 @@
 
 set -eu
 
+python3 -m nltk.downloader punkt
+
 python3 eduskuntavkk/get_vkk.py
 python3 eduskuntavkk/extract_text.py
 python3 eduskuntavkk/cleanup_vkk.py

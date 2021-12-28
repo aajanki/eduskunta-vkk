@@ -143,7 +143,7 @@ def parse_xml_data(data):
 
     root = ET.fromstring(data)
     tags = [tag.text for tag in root.findall(tag_path)]
-    position = [x.text for x in root.findall(position_path)][0]
+    position = next((x.text for x in root.findall(position_path)), None)
 
     return {
         'position': position,

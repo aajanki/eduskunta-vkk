@@ -3,6 +3,7 @@ import os
 import os.path
 import subprocess
 import tempfile
+import sys
 
 
 def main():
@@ -26,6 +27,10 @@ def main():
                 ocr_pdf(input_name, output_name)
         except subprocess.CalledProcessError as ex:
             print(ex)
+        except FileNotFoundError as ex:
+            print('A required external application missing?')
+            print(ex)
+            sys.exit(-1)
 
 
 def extract_text(pdffile, outputfile):
