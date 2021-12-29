@@ -34,7 +34,7 @@ def main():
 
 
 def extract_text(pdffile, outputfile):
-    subprocess.run(['pdftotext', pdffile, outputfile], check=True)
+    subprocess.run(['pdftotext', '-layout', pdffile, outputfile], check=True)
 
 
 def ocr_pdf(pdffile, outputfile):

@@ -1,4 +1,3 @@
-import codecs
 import os
 import os.path
 import re
@@ -17,26 +16,32 @@ def main():
         full_path = os.path.join(textdir, textfile)
 
         if os.path.getsize(full_path) > 100:
-            lines = codecs.open(full_path, encoding='utf-8').readlines()
-            if detect_language(lines) == 'fi':
+            lines = open(full_path, encoding='utf-8').readlines()
+            lang, doctype = detect_language_and_doctype(lines)
+            if lang == 'fi' and doctype == 'answer':
                 try:
                     text = cleanup_vkk(lines)
                 except Exception as ex:
                     print(f'Failed to cleanup {full_path}: {str(ex)}')
                 with open(os.path.join(outputdir, textfile), 'w') as f:
                     f.write(text)
+            elif lang == 'fi':
+                print(f'Document {textfile} is not an answer')
             else:
-                print(f'WARNING: Document {textfile} not in Finnish')
+                print(f'Document {textfile} not in Finnish')
 
 
-def detect_language(lines):
-    if (lines[0].startswith('Svar på skriftligt spörsmål') or
-        lines[0].startswith('Svar pä skriffligt spörsmäl')):
-        return 'sv'
-    elif lines[0].startswith('Vastaus kirjalliseen kysymykseen'):
-        return 'fi'
+def detect_language_and_doctype(lines):
+    line = lines[0].strip()
+    if (line.startswith('Svar på skriftligt spörsmål') or
+        line.startswith('Svar pä skriffligt spörsmäl')):
+        return ('sv', 'answer')
+    elif line.startswith('Vastaus kirjalliseen kysymykseen'):
+        return ('fi', 'answer')
+    elif line.startswith('Kirjallinen kysymys'):
+        return ('fi', 'question')
     else:
-        return 'unk'
+        return ('unk', 'unk')
 
 
 def cleanup_vkk(lines):
